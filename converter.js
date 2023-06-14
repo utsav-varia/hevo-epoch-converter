@@ -1,6 +1,10 @@
 let popupElement = null;
 
 function convertToTimestamp(epochTime) {
+    if (epochTime.length != 10 && epochTime.length != 13) {
+        return;
+    }
+
     if (epochTime.length == 10) {
         epochTime += '000';
     }
@@ -40,7 +44,7 @@ function showPopup(timestamps, posX, posY) {
     popupElement.style.padding = '5px';
     popupElement.style.position = 'absolute';
     popupElement.style.top = `${posY - 75}px`;
-    popupElement.style.left = `${posX - 125}px`;
+    popupElement.style.left = `${posX - 65}px`;
     popupElement.style.fontSize = '15px';
     popupElement.style.color = 'white';
     popupElement.style.backgroundColor = '#0291e3';
@@ -62,29 +66,37 @@ function showPopup(timestamps, posX, posY) {
     document.body.appendChild(popupElement);
 }
 
-document.addEventListener('selectionchange', () => {
-    if (popupElement) {
+function isMouseEventInsidePopup(event) {
+    if (popupElement != null) {
+        const target = event.target;
+        const result = popupElement.contains(target);
+        return result;
+    } else {
+        return false;
+    }
+}
+
+document.addEventListener('mouseup', (event) => {
+    if (popupElement && !isMouseEventInsidePopup(event)) {
         popupElement.remove();
         popupElement = null;
     }
 });
 
 document.addEventListener('mouseup', (event) => {
-
-});
-
-document.addEventListener('mouseup', (event) => {
     try {
-        const selection = window.getSelection().toString();
+        const selection = window.getSelection();
+        const selectionText = selection.toString();
         if (selection != null && selection != "") {
-            const timestamps = convertToTimestamp(selection);
+            const timestamps = convertToTimestamp(selectionText);
             if (timestamps) {
-                const posX = event.pageX;
-                const posY = event.pageY;
+                const selectionPosition = selection.getRangeAt(0).getBoundingClientRect();
+                const posX = window.pageXOffset + selectionPosition.left;
+                const posY = window.pageYOffset + selectionPosition.top;
                 showPopup(timestamps, posX, posY);
             }
         }
     } catch (error) {
-        console.log("error: ", error);
+        console.log("Epoch converter error: ", error);
     }
 });

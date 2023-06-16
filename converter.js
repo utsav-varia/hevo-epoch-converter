@@ -57,7 +57,7 @@ function showPopup(timestamps, posX, posY) {
     gmtDiv.style.paddingBottom = '6px';
 
     const browserDiv = document.createElement('div');
-    browserDiv.textContent = `Local: ${timestamps.browser}`;
+    browserDiv.textContent = `Local : ${timestamps.browser}`;
     browserDiv.style.paddingTop = '5px';
 
     popupElement.appendChild(gmtDiv);

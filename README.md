@@ -2,6 +2,8 @@
 
 *Epoch converter is a web browser extension to help convert epoch time to string format by selecting the text*
 
+![Example image](./example.png)
+
 ### Installation Instructions
 1. Download this repo
 2. You should have a folder named `hevo-epoch-converter`.
